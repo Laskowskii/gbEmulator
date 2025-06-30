@@ -1,4 +1,4 @@
-#include "main.h"
+#include "rom.h"
 
 void printRegion(uint8_t rom[]){
     uint16_t pointer = 0x014A;

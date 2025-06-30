@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef ROM_H
+#define ROM_H
     #define NINTENDO_LOGO_START 0x0104
     #define NINTENDO_LOGO_END 0x0133
     #define CARTRIDGE_TYPE_ADRESS 0x0147

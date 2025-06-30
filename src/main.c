@@ -1,4 +1,5 @@
-#include "main.h"
+#include "rom.h"
+#include "cpu.h"
 
 int main(int argc, char **argv){
     if(argc < 2){
@@ -15,6 +16,7 @@ int main(int argc, char **argv){
     uint8_t rom[size];
     fread(rom,sizeof(uint8_t),size,romFile);     
     printInfo(rom);
+    init_cpu(rom);
     fclose(romFile);
     return 0;
 }

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "rom.h": "c",
+        "cstdint": "c",
+        "memory.h": "c"
+    }
+}
