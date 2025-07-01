@@ -7,16 +7,11 @@ cpu_t init_cpu(uint8_t rom[]){
    fetch(&cpu);
 }
 
-uint16_t read16(cpu_t* cpu){
-   uint8_t byte1 = cpu->mem.ram[cpu->reg.PC++];
-   uint8_t byte2 = cpu->mem.ram[cpu->reg.PC++];
-   uint16_t value = (byte2 << 8) | byte1;
-   return value;
-}
 
 void readOpcode(cpu_t* cpu, uint8_t opcode){
       switch (opcode)
       {
+      //todo
       case 0x00: printf("nop"); break;
       case 0x01: printf("LD BC, %x",read16(cpu)); break;
       case 0x02: printf("nop"); break;
@@ -43,11 +38,5 @@ void fetch(cpu_t *cpu){
       readOpcode(cpu,cpu->mem.ram[cpu->reg.PC]);
       readOpcode(cpu,cpu->mem.ram[cpu->reg.PC]);
    }
-   else if(pc >= 0x4000 && pc <= 0x7FFF){
-      //bank1
-   }
-   else if(pc >= 0x8000 && pc <= 0x9FFF){
-      //vram
-   }
-   //todo external ram, wram itp
+   //remove this shit
 }
