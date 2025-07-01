@@ -2,5 +2,5 @@
 #include "cpu.h"
 
 int loadRomToBank(cpu_t *cpu, uint8_t rom[]){
-    memcpy(cpu->mem.romBank00, rom, ROM_BANK00_SIZE);
+    memcpy(cpu->mem.ram, rom, ROM_BANK00_SIZE);
 }
