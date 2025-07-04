@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include "memory.h"
 
+#define Z_FLAG (1 << 7)
+#define N_FLAG (1 << 6)
+#define H_FLAG (1 << 5)
+#define C_FLAG (1 << 4)
 
 typedef struct
 {

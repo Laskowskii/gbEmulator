@@ -16,8 +16,8 @@
     #include <stdbool.h>
 
     size_t getFileSize(FILE *f);
-    void printRomSize(uint8_t rom[]);
-    void printRamSize(uint8_t rom[]);
+    void getRomSize(uint8_t rom[]);
+    void getRamSize(uint8_t rom[]);
     void printGameTitle(uint8_t rom[]);
     void printNintentoLogoHex(uint8_t rom[]);
     void printRegion(uint8_t rom[]);

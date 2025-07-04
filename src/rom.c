@@ -44,11 +44,64 @@ void printCartridgeType(uint8_t rom[]){
     printf("Cardridge type: %02X\n",rom[CARTRIDGE_TYPE_ADRESS]);
 }
 
-void printRomSize(uint8_t rom[]){
-    printf("rom size: %x\n",rom[ROM_SIZE_ADRESS]);
+void getRomSize(uint8_t rom[]){
+    switch (rom[ROM_SIZE_ADRESS])
+    {
+    case 0x00:
+        printf("rom size: 32kib");
+        break;
+    case 0x01:
+        printf("rom size: 64kib");
+        break;
+    case 0x02:
+        printf("rom size: 128kib");
+        break;
+    case 0x03:
+        printf("rom size: 256kib");
+        break;
+    case 0x04:
+        printf("rom size: 512kib");
+        break;
+    case 0x05:
+        printf("rom size: 1mb");
+        break;
+    case 0x06:
+        printf("rom size: 2mb");
+        break;
+    case 0x07:
+        printf("rom size: 4mb");
+        break;
+    case 0x08:
+        printf("rom size: 8mb");
+        break;
+    default:
+        break;
+    }
+    printf("\n");
 }
-void printRamSize(uint8_t rom[]){
-    printf("ram size: %x\n",rom[RAM_SIZE_ADRESS]);
+void getRamSize(uint8_t rom[]){
+    switch (rom[RAM_SIZE_ADRESS])
+    {
+    case 0x00:
+    case 0x01:
+        printf("no additional ram");
+        break;
+    case 0x02:
+        printf("additional ram: 8kb");
+        break;
+    case 0x03:
+        printf("additional ram: 32kb");
+        break;
+    case 0x04:
+        printf("additional ram: 128kb");
+        break;
+    case 0x05:
+        printf("additional ram: 64kb");
+        break;
+    default:
+        break;
+    }
+    printf("\n");
 }
 
 bool checkChecksum(uint8_t rom[]){

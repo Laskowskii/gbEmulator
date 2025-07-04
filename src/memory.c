@@ -12,5 +12,5 @@ uint16_t read16(cpu_t *cpu){
 
 
 int loadRomToBank(cpu_t *cpu, uint8_t rom[]){
-    memcpy(cpu->mem.ram, rom, ROM_BANK00_SIZE + ROM_BANK01_SIZE);
+    memcpy(cpu->mem.ram, rom, ROM_BANK00_SIZE + ROM_BANKNN_SIZE);
 }

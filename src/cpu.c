@@ -7,12 +7,12 @@ cpu_t init_cpu(uint8_t rom[]){
    fetch(&cpu);
 }
 
-void inc16BitRegister(uint16_t *reg){
-   *reg++;
+void setFlag(cpu_t *cpu, uint8_t flag){
+   cpu->reg.F |= flag;
 }
 
-void dec16BitRegister(uint16_t *reg){
-   *reg--;
+void resetFlag(cpu_t *cpu, uint8_t flag){
+   cpu->reg.F &= ~flag;
 }
 
 void LD_into16BitRegister(char *reg,cpu_t *cpu ,uint16_t value){
@@ -20,7 +20,9 @@ void LD_into16BitRegister(char *reg,cpu_t *cpu ,uint16_t value){
       cpu->reg.BC = value;
    }
 }
-
+void jp_a16(cpu_t *cpu){
+   cpu->reg.PC = read16(cpu);
+}
 void readOpcode(cpu_t* cpu, uint8_t opcode){
       switch (opcode)
       {
@@ -41,8 +43,9 @@ void readOpcode(cpu_t* cpu, uint8_t opcode){
       case 0x0D: printf("DEC C"); break;
       case 0x0E: printf("LD, C, n8"); break;
       case 0x0F: printf("RRCA"); break;
+      case 0xC3: jp_a16(cpu); break;
       default:
-         printf("undefined func");
+         printf("undefined func: %02X",opcode);
          break;
       }
       printf("\n");
@@ -51,10 +54,10 @@ void readOpcode(cpu_t* cpu, uint8_t opcode){
 
 void fetch(cpu_t *cpu){
    uint16_t pc = cpu->reg.PC;
-   readOpcode(cpu,cpu->mem.ram[cpu->reg.PC]);
-   readOpcode(cpu,cpu->mem.ram[cpu->reg.PC]);
-   readOpcode(cpu,cpu->mem.ram[cpu->reg.PC]);
-   readOpcode(cpu,cpu->mem.ram[cpu->reg.PC]);
-   readOpcode(cpu,cpu->mem.ram[cpu->reg.PC]);
+   for (int i = 0; i < 15; i++)
+   {
+      readOpcode(cpu,cpu->mem.ram[cpu->reg.PC]);
+   }
+   
    //remove this shit
 }

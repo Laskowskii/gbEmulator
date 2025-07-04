@@ -26,7 +26,7 @@ void printInfo(uint8_t rom[]){
     printNintentoLogoHex(rom); 
     printRegion(rom);
     printCartridgeType(rom);
-    printRomSize(rom);
-    printRamSize(rom);
+    getRomSize(rom);
+    getRamSize(rom);
     checkChecksum(rom);
 }

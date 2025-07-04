@@ -3,7 +3,7 @@
 
 #define RAM_SIZE 0x10000
 #define ROM_BANK00_SIZE 0x3FFF + 1
-#define ROM_BANK01_SIZE 0x3FFF + 1
+#define ROM_BANKNN_SIZE 0x3FFF + 1
 
 #define ROM_BANK00_START 0x0000 
 #define ROM_BANK00_END 0x3FFF
@@ -11,8 +11,8 @@
 #define ROM_BANK01_END 0x7FFF
 #define VRAM_START 0x8000
 #define VRAM_END 0x9FFF
-#define ERAM_START 0xA000
-#define ERAM_END 0xBFFF
+#define SRAM_START 0xA000
+#define SRAM_END 0xBFFF
 #define WRAM_START 0xC000
 #define WRAM_END 0xDFFF
 #define ECHO_RAM_START 0xE000
@@ -23,6 +23,12 @@
 #define IO_REGISTERS_END 0xFF7F
 #define HRAM_START 0xFF80
 #define HRAM_END 0xFFFE
+
+#define VRAM_SIZE ((VRAM_END-VRAM_START) + 1)
+#define WRAM_SIZE ((WRAM_END-WRAM_START) + 1)
+#define HRAM_SIZE ((HRAM_END-HRAM_START) + 1)
+#define IO_REGISTERS_SIZE ((IO_REGISTERS_END-IO_REGISTERS_START) + 1)
+#define OAM_SIZE ((OAM_END - OAM_SIZE) + 1)
 
 #include <stdint.h>
 #include <string.h>
