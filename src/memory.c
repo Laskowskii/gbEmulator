@@ -3,11 +3,20 @@
 
 
 
-uint16_t read16(cpu_t *cpu){
-   uint8_t byte1 = cpu->mem.ram[cpu->reg.PC++];
-   uint8_t byte2 = cpu->mem.ram[cpu->reg.PC++];
+uint16_t readMemory16(cpu_t *cpu){
+   uint8_t byte1 = cpu->mem.ram[cpu->reg.PC];
+   cpu->reg.PC++;
+   uint8_t byte2 = cpu->mem.ram[cpu->reg.PC];
+   cpu->reg.PC++;
    uint16_t value = (byte2 << 8) | byte1;
    return value;
+}
+
+uint8_t readMemory8(cpu_t *cpu){
+   uint8_t byte = cpu->mem.ram[cpu->reg.PC];
+   cpu->reg.PC++;
+   return byte;
+   //remove this shit
 }
 
 

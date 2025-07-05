@@ -43,6 +43,7 @@ typedef struct memory_s
 
 
 int loadRomToBank(cpu_t *cpu, uint8_t rom[]);
-uint16_t read16(cpu_t* cpu);
+uint16_t readMemory16(cpu_t* cpu);
+uint8_t readMemory8(cpu_t *cpu);
 
 #endif

@@ -62,5 +62,9 @@ typedef struct cpu_s
 
 cpu_t init_cpu(uint8_t rom[]);
 void readOpcode(cpu_t* cpu, uint8_t value);
-void fetch(cpu_t *cpu);
+void setFlag(cpu_t *cpu, uint8_t flag);
+void resetFlag(cpu_t *cpu, uint8_t flag);
+
+void ld_BC_n(cpu_t *cpu);
+
 #endif
