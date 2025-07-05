@@ -74,7 +74,7 @@ void ld_DE_n(cpu_t *cpu){
    cpu->reg.DE = n;
 }
 
-//0x21
+//0x21C
 void ld_HL_n(cpu_t *cpu){
    uint16_t n = readMemory16(cpu);
    cpu->reg.HL = n;
@@ -272,7 +272,7 @@ void inc_A(cpu_t *cpu){
    resetFlag(cpu,N_FLAG);
 }
 
-//0x05
+//0x05 + 0x0D
 //zrobic dec i te jebane half cary kurestwo
 
 
@@ -296,8 +296,105 @@ void ld_atHL_n(cpu_t *cpu){
    cpu->mem.ram[cpu->reg.HL] = readMemory8(cpu);
 }
 
+//0x0E
+void ld_C_n(cpu_t *cpu){
+   cpu->reg.C = readMemory8(cpu);
+}
+
+//0x1E
+void ld_E_n(cpu_t *cpu){
+   cpu->reg.E = readMemory8(cpu);
+}
+
+//0x2E
+void ld_L_n(cpu_t *cpu){
+   cpu->reg.L = readMemory8(cpu);
+}
+
+//0x3E
+void ld_A_n(cpu_t *cpu){
+   cpu->reg.A = readMemory8(cpu);
+}
+
 //0x07
-//todo
+void rlca(cpu_t *cpu){
+   uint8_t bit7;
+   bit7 = cpu->reg.A & 0b10000000;
+   bit7 >>= 7;
+   cpu->reg.A <<= 1;
+   cpu->reg.A |= bit7;
+   resetFlag(cpu, Z_FLAG);
+   resetFlag(cpu, N_FLAG);
+   resetFlag(cpu, H_FLAG);
+   if(bit7){
+      setFlag(cpu, C_FLAG);
+   }
+   else{
+      resetFlag(cpu, C_FLAG);
+   }
+}
+
+//0x17
+void rla(cpu_t *cpu){
+   uint8_t bit7;
+   bit7 = cpu->reg.A & 0b10000000;
+   bit7 >>= 7;
+   cpu->reg.A <<= 1;
+   cpu->reg.A |= GET_CARRY_FLAG_VALUE; //carry flag location
+   resetFlag(cpu, Z_FLAG);
+   resetFlag(cpu, N_FLAG);
+   resetFlag(cpu, H_FLAG);
+   if(bit7){
+      setFlag(cpu, C_FLAG);
+   }
+   else{
+      resetFlag(cpu, C_FLAG);
+   }
+}
+
+//0x0F
+void rrca(cpu_t *cpu){
+      uint8_t bit0;
+      bit0 = cpu->reg.A & 0b00000001;
+      cpu->reg.A >>= 1;
+      cpu->reg.A |= (bit0 << 7);
+      resetFlag(cpu, Z_FLAG);
+      resetFlag(cpu, N_FLAG);
+      resetFlag(cpu, H_FLAG);
+      if(bit0){
+         setFlag(cpu, C_FLAG);
+      }
+      else{
+         resetFlag(cpu, C_FLAG);
+      }
+}
+
+//0x1F
+void rra(cpu_t *cpu){
+      uint8_t bit0, cflag;
+      cflag = GET_CARRY_FLAG_VALUE;
+      bit0 = cpu->reg.A & 0b00000001;
+      cpu->reg.A >>= 1;
+      cpu->reg.A |= (cflag << 7);
+      resetFlag(cpu, Z_FLAG);
+      resetFlag(cpu, N_FLAG);
+      resetFlag(cpu, H_FLAG);
+      if(bit0){
+         setFlag(cpu, C_FLAG);
+      }
+      else{
+         resetFlag(cpu, C_FLAG);
+      }
+}
+
+//0x27 todo
+
+//0x37
+void scf(cpu_t *cpu){
+   resetFlag(cpu, N_FLAG);
+   resetFlag(cpu, H_FLAG);
+   setFlag(cpu, C_FLAG);
+}
 
 //0x08
 //todo
