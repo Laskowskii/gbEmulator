@@ -16,7 +16,6 @@ uint8_t readMemory8(cpu_t *cpu){
    uint8_t byte = cpu->mem.ram[cpu->reg.PC];
    cpu->reg.PC++;
    return byte;
-   //remove this shit
 }
 
 

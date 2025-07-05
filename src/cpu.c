@@ -87,23 +87,23 @@ void ld_SP_n(cpu_t *cpu){
 }
 
 //0x02
-void ld_BC_A(cpu_t *cpu){
+void ld_atBC_A(cpu_t *cpu){
    cpu->mem.ram[cpu->reg.BC] = cpu->reg.A;
 }
 
 //0x12
-void ld_DE_A(cpu_t *cpu){
+void ld_atDE_A(cpu_t *cpu){
    cpu->mem.ram[cpu->reg.DE] = cpu->reg.A;
 }
 
 //0x22
-void ld_HLinc_A(cpu_t *cpu){
+void ld_atHLinc_A(cpu_t *cpu){
    cpu->mem.ram[cpu->reg.HL] = cpu->reg.A;
    cpu->reg.HL++;
 }
 
 //0x32
-void ld_HLdec_A(cpu_t *cpu){
+void ld_atHLdec_A(cpu_t *cpu){
    cpu->mem.ram[cpu->reg.HL] = cpu->reg.A;
    cpu->reg.HL--;
 }
@@ -130,6 +130,12 @@ void inc_SP(cpu_t *cpu){
 
 //0x04
 void inc_B(cpu_t *cpu){
+   if(HALF_CARRY_CHECK(cpu->reg.B, 1)){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
    cpu->reg.B++;
    if(cpu->reg.B == 0){
       setFlag(cpu,Z_FLAG);
@@ -138,6 +144,205 @@ void inc_B(cpu_t *cpu){
       resetFlag(cpu,Z_FLAG);
    }
    resetFlag(cpu,N_FLAG);
-   //todo half carry
 }
 
+//0x14
+void inc_D(cpu_t *cpu){
+   if(HALF_CARRY_CHECK(cpu->reg.D, 1)){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.D++;
+   if(cpu->reg.D == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+}
+
+//0x24
+void inc_H(cpu_t *cpu){
+   if(HALF_CARRY_CHECK(cpu->reg.H, 1)){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.H++;
+   if(cpu->reg.H == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+}
+
+//0x34
+void inc_atHL(cpu_t *cpu){
+   if(HALF_CARRY_CHECK(cpu->mem.ram[cpu->reg.HL], 1)){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->mem.ram[cpu->reg.HL]++;
+   if(cpu->mem.ram[cpu->reg.HL] == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+}
+
+//0x0C
+void inc_C(cpu_t *cpu){
+   if(HALF_CARRY_CHECK(cpu->reg.C, 1)){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.C++;
+   if(cpu->reg.C == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+}
+
+//0x1C
+void inc_E(cpu_t *cpu){
+   if(HALF_CARRY_CHECK(cpu->reg.E, 1)){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.E++;
+   if(cpu->reg.E == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+}
+
+//0x2C
+void inc_L(cpu_t *cpu){
+   if(HALF_CARRY_CHECK(cpu->reg.L, 1)){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.L++;
+   if(cpu->reg.L == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+}
+
+//0x3C
+void inc_A(cpu_t *cpu){
+   if(HALF_CARRY_CHECK(cpu->reg.A, 1)){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.A++;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+}
+
+//0x05
+//zrobic dec i te jebane half cary kurestwo
+
+
+//0x06
+void ld_B_n(cpu_t *cpu){
+   cpu->reg.B = readMemory8(cpu);
+}
+
+//0x16
+void ld_D_n(cpu_t *cpu){
+   cpu->reg.D = readMemory8(cpu);
+}
+
+//0x26
+void ld_H_n(cpu_t *cpu){
+   cpu->reg.H = readMemory8(cpu);
+}
+
+//0x36
+void ld_atHL_n(cpu_t *cpu){
+   cpu->mem.ram[cpu->reg.HL] = readMemory8(cpu);
+}
+
+//0x07
+//todo
+
+//0x08
+//todo
+
+//0x09
+//todo
+
+//0x0A
+void ld_A_atBC(cpu_t *cpu){
+   cpu->reg.A = cpu->mem.ram[cpu->reg.BC];
+}
+
+//0x1A
+void ld_A_atDE(cpu_t *cpu){
+   cpu->reg.A = cpu->mem.ram[cpu->reg.DE];
+}
+
+//0x2A
+void ld_A_atHLinc(cpu_t *cpu){
+   cpu->reg.A = cpu->mem.ram[cpu->reg.HL];
+   cpu->reg.HL++;
+}
+
+//0x3A
+void ld_A_atHLdec(cpu_t *cpu){
+   cpu->reg.A = cpu->mem.ram[cpu->reg.HL];
+   cpu->reg.HL--;
+}
+
+//0x0B
+void dec_BC(cpu_t *cpu){
+   cpu->reg.BC--;
+}
+
+//0x1B
+void dec_DE(cpu_t *cpu){
+   cpu->reg.DE--;
+}
+
+//0x2B
+void dec_HL(cpu_t *cpu){
+   cpu->reg.HL--;
+}
+
+//0x3B
+void dec_SP(cpu_t *cpu){
+   cpu->reg.SP--;
+}
