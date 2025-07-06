@@ -707,6 +707,84 @@ void ld_L_A(cpu_t *cpu){
 }
 
 //0x70 todo
+void ld_atHL_B(cpu_t *cpu){
+   cpu->mem.ram[cpu->reg.HL] = cpu->reg.B;
+}
+
+//0x71
+void ld_atHL_C(cpu_t *cpu){
+   cpu->mem.ram[cpu->reg.HL] = cpu->reg.C;
+}
+
+//0x72
+void ld_atHL_D(cpu_t *cpu){
+   cpu->mem.ram[cpu->reg.HL] = cpu->reg.D;
+}
+
+//0x73
+void ld_atHL_E(cpu_t *cpu){
+   cpu->mem.ram[cpu->reg.HL] = cpu->reg.E;
+}
+
+//0x74
+void ld_atHL_H(cpu_t *cpu){
+   cpu->mem.ram[cpu->reg.HL] = cpu->reg.H;
+}
+
+//0x75
+void ld_atHL_L(cpu_t *cpu){
+   cpu->mem.ram[cpu->reg.HL] = cpu->reg.L;
+}
+
+//0x76 todo
+void HALT(cpu_t *cpu){
+   printf("idk todo");
+}
+
+//0x77
+void ld_atHL_A(cpu_t *cpu){
+   cpu->mem.ram[cpu->reg.HL] = cpu->reg.A;
+}
+
+//0x78
+void ld_A_B(cpu_t *cpu){
+   cpu->reg.A = cpu->reg.B;
+}
+
+//0x79
+void ld_A_C(cpu_t *cpu){
+   cpu->reg.A = cpu->reg.C;
+}
+
+//0x7A
+void ld_A_D(cpu_t *cpu){
+   cpu->reg.A = cpu->reg.D;
+}
+
+//0x7B
+void ld_A_E(cpu_t *cpu){
+   cpu->reg.A = cpu->reg.E;
+}
+
+//0x7C
+void ld_A_H(cpu_t *cpu){
+   cpu->reg.A = cpu->reg.H;
+}
+
+//0x7D
+void ld_A_L(cpu_t *cpu){
+   cpu->reg.A = cpu->reg.L;
+}
+
+//0x7E
+void ld_A_atHL(cpu_t *cpu){
+   cpu->reg.A = cpu->mem.ram[cpu->reg.HL];
+}
+
+//0x7F
+void ld_A_A(cpu_t *cpu){
+   cpu->reg.A = cpu->reg.A;
+}
 
 //0x07
 void rlca(cpu_t *cpu){
@@ -809,7 +887,14 @@ void scf(cpu_t *cpu){
 }
 
 //0x08
-//todo
+void ld_A_SP(cpu_t *cpu){
+   uint16_t address = readMemory16(cpu);
+   uint16_t sp = cpu->reg.SP;
+   //todo write16
+   cpu->mem.ram[address] = sp & 0xFF;
+   address++;
+   cpu->mem.ram[address] = (sp >> 8) & 0xFF;
+}
 
 //0x09
 void add_HL_BC(cpu_t *cpu){
