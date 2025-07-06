@@ -59,7 +59,17 @@ void readOpcode(cpu_t* cpu, uint8_t opcode){
 
 //0x00
 void nop(){
-   printf("lol");
+   printf("nop\n");
+}
+
+//0x10
+void stop(){
+   printf("no stop i guess\n");
+} 
+
+//0x20
+void jr_NZ_e(){
+   //idk;
 }
 
 //0x01
@@ -130,7 +140,7 @@ void inc_SP(cpu_t *cpu){
 
 //0x04
 void inc_B(cpu_t *cpu){
-   if(HALF_CARRY_CHECK(cpu->reg.B, 1)){
+   if(HALF_CARRY_CHECK_ADD(cpu->reg.B, 1)){
       setFlag(cpu,H_FLAG);
    }
    else{
@@ -148,7 +158,7 @@ void inc_B(cpu_t *cpu){
 
 //0x14
 void inc_D(cpu_t *cpu){
-   if(HALF_CARRY_CHECK(cpu->reg.D, 1)){
+   if(HALF_CARRY_CHECK_ADD(cpu->reg.D, 1)){
       setFlag(cpu,H_FLAG);
    }
    else{
@@ -166,7 +176,7 @@ void inc_D(cpu_t *cpu){
 
 //0x24
 void inc_H(cpu_t *cpu){
-   if(HALF_CARRY_CHECK(cpu->reg.H, 1)){
+   if(HALF_CARRY_CHECK_ADD(cpu->reg.H, 1)){
       setFlag(cpu,H_FLAG);
    }
    else{
@@ -184,7 +194,7 @@ void inc_H(cpu_t *cpu){
 
 //0x34
 void inc_atHL(cpu_t *cpu){
-   if(HALF_CARRY_CHECK(cpu->mem.ram[cpu->reg.HL], 1)){
+   if(HALF_CARRY_CHECK_ADD(cpu->mem.ram[cpu->reg.HL], 1)){
       setFlag(cpu,H_FLAG);
    }
    else{
@@ -202,7 +212,7 @@ void inc_atHL(cpu_t *cpu){
 
 //0x0C
 void inc_C(cpu_t *cpu){
-   if(HALF_CARRY_CHECK(cpu->reg.C, 1)){
+   if(HALF_CARRY_CHECK_ADD(cpu->reg.C, 1)){
       setFlag(cpu,H_FLAG);
    }
    else{
@@ -220,7 +230,7 @@ void inc_C(cpu_t *cpu){
 
 //0x1C
 void inc_E(cpu_t *cpu){
-   if(HALF_CARRY_CHECK(cpu->reg.E, 1)){
+   if(HALF_CARRY_CHECK_ADD(cpu->reg.E, 1)){
       setFlag(cpu,H_FLAG);
    }
    else{
@@ -238,7 +248,7 @@ void inc_E(cpu_t *cpu){
 
 //0x2C
 void inc_L(cpu_t *cpu){
-   if(HALF_CARRY_CHECK(cpu->reg.L, 1)){
+   if(HALF_CARRY_CHECK_ADD(cpu->reg.L, 1)){
       setFlag(cpu,H_FLAG);
    }
    else{
@@ -256,7 +266,7 @@ void inc_L(cpu_t *cpu){
 
 //0x3C
 void inc_A(cpu_t *cpu){
-   if(HALF_CARRY_CHECK(cpu->reg.A, 1)){
+   if(HALF_CARRY_CHECK_ADD(cpu->reg.A, 1)){
       setFlag(cpu,H_FLAG);
    }
    else{
@@ -272,9 +282,148 @@ void inc_A(cpu_t *cpu){
    resetFlag(cpu,N_FLAG);
 }
 
-//0x05 + 0x0D
-//zrobic dec i te jebane half cary kurestwo
+//0x05
+void dec_B(cpu_t *cpu){
+   if(HALF_CARRY_CHECK_SUB(cpu->reg.B, 1)){
+      setFlag(cpu, H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.B--;
+   if(cpu->reg.B == 0){
+      setFlag(cpu, Z_FLAG);
+   }
+   else{
+      resetFlag(cpu, Z_FLAG);
+   }
+   setFlag(cpu, N_FLAG);
+}
+//0x15
+void dec_D(cpu_t *cpu){
+   if(HALF_CARRY_CHECK_SUB(cpu->reg.D, 1)){
+      setFlag(cpu, H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.D--;
+   if(cpu->reg.D == 0){
+      setFlag(cpu, Z_FLAG);
+   }
+   else{
+      resetFlag(cpu, Z_FLAG);
+   }
+   setFlag(cpu, N_FLAG);
+}
 
+//0x25
+void dec_H(cpu_t *cpu){
+   if(HALF_CARRY_CHECK_SUB(cpu->reg.H, 1)){
+      setFlag(cpu, H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.H--;
+   if(cpu->reg.H == 0){
+      setFlag(cpu, Z_FLAG);
+   }
+   else{
+      resetFlag(cpu, Z_FLAG);
+   }
+   setFlag(cpu, N_FLAG);
+}
+
+//0x35
+void dec_atHl(cpu_t *cpu){
+   if(HALF_CARRY_CHECK_SUB(cpu->mem.ram[cpu->reg.HL], 1)){
+      setFlag(cpu, H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->mem.ram[cpu->reg.HL]--;
+   if(cpu->mem.ram[cpu->reg.HL] == 0){
+      setFlag(cpu, Z_FLAG);
+   }
+   else{
+      resetFlag(cpu, Z_FLAG);
+   }
+   setFlag(cpu, N_FLAG);
+}
+
+//0x0D
+void dec_C(cpu_t *cpu){
+   if(HALF_CARRY_CHECK_SUB(cpu->reg.C, 1)){
+      setFlag(cpu, H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.C--;
+   if(cpu->reg.C == 0){
+      setFlag(cpu, Z_FLAG);
+   }
+   else{
+      resetFlag(cpu, Z_FLAG);
+   }
+   setFlag(cpu, N_FLAG);
+}
+
+//0x1D
+void dec_E(cpu_t *cpu){
+   if(HALF_CARRY_CHECK_SUB(cpu->reg.E, 1)){
+      setFlag(cpu, H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.E--;
+   if(cpu->reg.E == 0){
+      setFlag(cpu, Z_FLAG);
+   }
+   else{
+      resetFlag(cpu, Z_FLAG);
+   }
+   setFlag(cpu, N_FLAG);
+}
+
+//0x2D
+void dec_L(cpu_t *cpu){
+   if(HALF_CARRY_CHECK_SUB(cpu->reg.L, 1)){
+      setFlag(cpu, H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.L--;
+   if(cpu->reg.L == 0){
+      setFlag(cpu, Z_FLAG);
+   }
+   else{
+      resetFlag(cpu, Z_FLAG);
+   }
+   setFlag(cpu, N_FLAG);
+}
+
+//0x3D
+void dec_A(cpu_t *cpu){
+   if(HALF_CARRY_CHECK_SUB(cpu->reg.A, 1)){
+      setFlag(cpu, H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+   cpu->reg.A--;
+   if(cpu->reg.A == 0){
+      setFlag(cpu, Z_FLAG);
+   }
+   else{
+      resetFlag(cpu, Z_FLAG);
+   }
+   setFlag(cpu, N_FLAG);
+}
 
 //0x06
 void ld_B_n(cpu_t *cpu){
@@ -385,6 +534,26 @@ void rra(cpu_t *cpu){
       else{
          resetFlag(cpu, C_FLAG);
       }
+}
+
+//0x2F
+void cpl(cpu_t *cpu){
+   cpu->reg.A = ~cpu->reg.A ;
+   setFlag(cpu, N_FLAG);
+   setFlag(cpu, H_FLAG);
+}
+
+//0x3F
+
+void ccf(cpu_t *cpu){
+   resetFlag(cpu,N_FLAG);
+   resetFlag(cpu,H_FLAG);
+   if(GET_CARRY_FLAG_VALUE){
+      resetFlag(cpu,C_FLAG);
+   }
+   else{
+      setFlag(cpu,C_FLAG);
+   }
 }
 
 //0x27 todo

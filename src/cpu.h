@@ -10,8 +10,9 @@
 #define H_FLAG (1 << 5)
 #define C_FLAG (1 << 4)
 
-#define HALF_CARRY_CHECK(deafultValue,addValue) (((deafultValue & 0x0F) + (addValue & 0x0F)) > 0x0F)
-#define GET_CARRY_FLAG_VALUE cpu->reg.A |= (cpu->reg.F & 0b00010000) >> 4
+#define HALF_CARRY_CHECK_ADD(deafultValue,addValue) (((deafultValue & 0x0F) + (addValue & 0x0F)) > 0x0F)
+#define HALF_CARRY_CHECK_SUB(deafultValue,addValue) (deafultValue & 0x0F) < (addValue & 0x0F)
+#define GET_CARRY_FLAG_VALUE ((cpu->reg.F & 0b00010000) >> 4)
 
 
 typedef struct
