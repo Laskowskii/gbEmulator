@@ -13,7 +13,7 @@ cpu_t init_cpu(uint8_t rom[]){
    cpu->reg.L = 0x4D;
    cpu->reg.PC = 0x0100; 
    cpu->reg.SP = 0xFFFE;
-
+   instructions[0].function;
    loadRomToBank(cpu, rom);
    uint8_t opcode = readMemory8(cpu);
    readOpcode(cpu, opcode);
@@ -67,7 +67,7 @@ void stop(){
    printf("no stop i guess\n");
 } 
 
-//0x20
+//0x20 todo
 void jr_NZ_e(){
    //idk;
 }
@@ -706,7 +706,7 @@ void ld_L_A(cpu_t *cpu){
    cpu->reg.L = cpu->reg.B;
 }
 
-//0x70 todo
+//0x70
 void ld_atHL_B(cpu_t *cpu){
    cpu->mem.ram[cpu->reg.HL] = cpu->reg.B;
 }
@@ -887,13 +887,18 @@ void scf(cpu_t *cpu){
 }
 
 //0x08
-void ld_A_SP(cpu_t *cpu){
+void ld_a_SP(cpu_t *cpu){
    uint16_t address = readMemory16(cpu);
    uint16_t sp = cpu->reg.SP;
-   //todo write16
    cpu->mem.ram[address] = sp & 0xFF;
    address++;
    cpu->mem.ram[address] = (sp >> 8) & 0xFF;
+}
+
+//0x18
+void JR_e(cpu_t *cpu){
+   int8_t e = (int8_t) readMemory8(cpu);
+   cpu->reg.PC += e;
 }
 
 //0x09
@@ -1010,3 +1015,226 @@ void dec_SP(cpu_t *cpu){
    cpu->reg.SP--;
 }
 
+//0x80
+void add_A_B(cpu_t *cpu){
+   if((cpu->reg.A & 0x0F) + (cpu->reg.B & 0x0F) > 0x0F){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+
+   if(cpu->reg.A + cpu->reg.B > 0xFF){
+      setFlag(cpu,C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+   cpu->reg.A += cpu->reg.B;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x81
+void add_A_C(cpu_t *cpu){
+   if((cpu->reg.A & 0x0F) + (cpu->reg.C & 0x0F) > 0x0F){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+
+   if(cpu->reg.A + cpu->reg.C > 0xFF){
+      setFlag(cpu,C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+   cpu->reg.A += cpu->reg.C;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x82
+void add_A_D(cpu_t *cpu){
+   if((cpu->reg.A & 0x0F) + (cpu->reg.D & 0x0F) > 0x0F){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+
+   if(cpu->reg.A + cpu->reg.D > 0xFF){
+      setFlag(cpu,C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+   cpu->reg.A += cpu->reg.D;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x83
+void add_A_E(cpu_t *cpu){
+   if((cpu->reg.A & 0x0F) + (cpu->reg.E & 0x0F) > 0x0F){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+
+   if(cpu->reg.A + cpu->reg.E > 0xFF){
+      setFlag(cpu,C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+   cpu->reg.A += cpu->reg.E;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x84
+void add_A_H(cpu_t *cpu){
+   if((cpu->reg.A & 0x0F) + (cpu->reg.H & 0x0F) > 0x0F){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+
+   if(cpu->reg.A + cpu->reg.H > 0xFF){
+      setFlag(cpu,C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+   cpu->reg.A += cpu->reg.H;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x85
+void add_A_L(cpu_t *cpu){
+   if((cpu->reg.A & 0x0F) + (cpu->reg.L & 0x0F) > 0x0F){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+
+   if(cpu->reg.A + cpu->reg.L > 0xFF){
+      setFlag(cpu,C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+   cpu->reg.A += cpu->reg.L;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x86
+void add_A_atHL(cpu_t *cpu){
+   uint8_t Hlval = cpu->mem.ram[cpu->reg.HL];
+   if((cpu->reg.A & 0x0F) + (Hlval & 0x0F) > 0x0F){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+
+   if(cpu->reg.A + Hlval > 0xFF){
+      setFlag(cpu,C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+   cpu->reg.A += Hlval;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x87
+void add_A_A(cpu_t *cpu){
+   if((cpu->reg.A & 0x0F) + (cpu->reg.A & 0x0F) > 0x0F){
+      setFlag(cpu,H_FLAG);
+   }
+   else{
+      resetFlag(cpu,H_FLAG);
+   }
+
+   if(cpu->reg.A + cpu->reg.A > 0xFF){
+      setFlag(cpu,C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   resetFlag(cpu,N_FLAG);
+   cpu->reg.A += cpu->reg.A;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+instruction_t instructions[256] = {
+   {"nop", nop, 4},
+   {"LD BC, n16", ld_BC_n, 12},
+   {"LD [BC], A", ld_atBC_A, 8},
+   {"INC BC", inc_BC, 8},
+   {"INC B", inc_B, 4},
+   {"DEC_B", dec_B,4},
+   {"LD B, n8", ld_B_n, 8},
+   {"RLCA", rlca, 4},
+   {"LD[a16], SP", ld_a_SP, 20},
+   {"ADD HL, BC", add_HL_BC, 8},
+   {"LD A, [BC]",ld_A_atBC, 8},
+   {"DEC BC",dec_BC, 8},
+   {"INc C", inc_C, 4},
+   {"DEC C", dec_C, 4},
+   {"LD C, n8", ld_C_n, 8},
+   {"RRCA", rrca, 4},
+   {"stop", stop, 4},
+   {"LD DE, n16", ld_DE_n, 12},
+   {"LD [DE], A", ld_atDE_A, 8},
+   {"INC DE", inc_DE, 8},
+};

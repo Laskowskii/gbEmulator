@@ -68,6 +68,14 @@ typedef struct cpu_s
 }cpu_t;
 
 
+typedef struct
+{
+    char name[20];
+    void (*function)(cpu_t *cpu);
+    uint8_t tCycles;
+}instruction_t;
+
+
 cpu_t init_cpu(uint8_t rom[]);
 void readOpcode(cpu_t* cpu, uint8_t value);
 void setFlag(cpu_t *cpu, uint8_t flag);
