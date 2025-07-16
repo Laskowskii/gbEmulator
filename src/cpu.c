@@ -1169,6 +1169,175 @@ void add_A_A(cpu_t *cpu){
    }
 }
 
+//0x90
+void sub_A_B(cpu_t *cpu){
+   setFlag(cpu,N_FLAG);
+   if((cpu->reg.A & 0x0F) < (cpu->reg.B & 0x0F)){
+      setFlag(cpu, H_FLAG);
+   } 
+   else {
+      resetFlag(cpu, H_FLAG);
+   }
+   if(cpu->reg.A < cpu->reg.B){
+      setFlag(cpu, C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   cpu->reg.A -= cpu->reg.B;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x91
+void sub_A_C(cpu_t *cpu){
+   setFlag(cpu,N_FLAG);
+   if((cpu->reg.A & 0x0F) < (cpu->reg.C & 0x0F)){
+      setFlag(cpu, H_FLAG);
+   } 
+   else {
+      resetFlag(cpu, H_FLAG);
+   }
+   if(cpu->reg.A < cpu->reg.C){
+      setFlag(cpu, C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   cpu->reg.A -= cpu->reg.C;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x92
+void sub_A_D(cpu_t *cpu){
+   setFlag(cpu,N_FLAG);
+   if((cpu->reg.A & 0x0F) < (cpu->reg.D & 0x0F)){
+      setFlag(cpu, H_FLAG);
+   } 
+   else {
+      resetFlag(cpu, H_FLAG);
+   }
+   if(cpu->reg.A < cpu->reg.D){
+      setFlag(cpu, C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   cpu->reg.A -= cpu->reg.D;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x93
+void sub_A_E(cpu_t *cpu){
+   setFlag(cpu,N_FLAG);
+   if((cpu->reg.A & 0x0F) < (cpu->reg.E & 0x0F)){
+      setFlag(cpu, H_FLAG);
+   } 
+   else {
+      resetFlag(cpu, H_FLAG);
+   }
+   if(cpu->reg.A < cpu->reg.E){
+      setFlag(cpu, C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   cpu->reg.A -= cpu->reg.E;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x94
+void sub_A_H(cpu_t *cpu){
+   setFlag(cpu,N_FLAG);
+   if((cpu->reg.A & 0x0F) < (cpu->reg.H & 0x0F)){
+      setFlag(cpu, H_FLAG);
+   } 
+   else {
+      resetFlag(cpu, H_FLAG);
+   }
+   if(cpu->reg.A < cpu->reg.H){
+      setFlag(cpu, C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   cpu->reg.A -= cpu->reg.H;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x95
+void sub_A_L(cpu_t *cpu){
+   setFlag(cpu,N_FLAG);
+   if((cpu->reg.A & 0x0F) < (cpu->reg.L & 0x0F)){
+      setFlag(cpu, H_FLAG);
+   } 
+   else {
+      resetFlag(cpu, H_FLAG);
+   }
+   if(cpu->reg.A < cpu->reg.L){
+      setFlag(cpu, C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   cpu->reg.A -= cpu->reg.L;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+//0x96
+void sub_A_atHL(cpu_t *cpu){
+   setFlag(cpu,N_FLAG);
+   if((cpu->reg.A & 0x0F) < (cpu->reg.E & 0x0F)){
+      setFlag(cpu, H_FLAG);
+   } 
+   else {
+      resetFlag(cpu, H_FLAG);
+   }
+   if(cpu->reg.A < cpu->reg.E){
+      setFlag(cpu, C_FLAG);
+   }
+   else{
+      resetFlag(cpu,C_FLAG);
+   }
+   cpu->reg.A -= cpu->reg.E;
+   if(cpu->reg.A == 0){
+      setFlag(cpu,Z_FLAG);
+   }
+   else{
+      resetFlag(cpu,Z_FLAG);
+   }
+}
+
+
 instruction_t instructions[256] = {
    {"nop", nop, 4},
    {"LD BC, n16", ld_BC_n, 12},
