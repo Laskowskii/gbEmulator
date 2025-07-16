@@ -3,7 +3,9 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "memory.h"
+
 
 #define Z_FLAG (1 << 7)
 #define N_FLAG (1 << 6)
@@ -82,5 +84,7 @@ void setFlag(cpu_t *cpu, uint8_t flag);
 void resetFlag(cpu_t *cpu, uint8_t flag);
 
 void ld_BC_n(cpu_t *cpu);
+
+
 
 #endif

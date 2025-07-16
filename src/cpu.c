@@ -1,23 +1,6 @@
 #include "cpu.h"
 #include "memory.h"
-cpu_t init_cpu(uint8_t rom[]){
-   cpu_t *cpu;
-   cpu->reg.A = 0x01;
-   cpu->reg.F = 0x00;
-   setFlag(cpu, Z_FLAG);
-   cpu->reg.B = 0x00;
-   cpu->reg.C = 0x13;
-   cpu->reg.D = 0x00;
-   cpu->reg.E = 0xD8;
-   cpu->reg.H = 0x01;
-   cpu->reg.L = 0x4D;
-   cpu->reg.PC = 0x0100; 
-   cpu->reg.SP = 0xFFFE;
-   instructions[0].function;
-   loadRomToBank(cpu, rom);
-   uint8_t opcode = readMemory8(cpu);
-   readOpcode(cpu, opcode);
-}
+
 
 void setFlag(cpu_t *cpu, uint8_t flag){
    cpu->reg.F |= flag;
@@ -27,48 +10,18 @@ void resetFlag(cpu_t *cpu, uint8_t flag){
    cpu->reg.F &= ~flag;
 }
 
-void readOpcode(cpu_t* cpu, uint8_t opcode){
-      switch (opcode)
-      {
-      //todo
-      case 0x00: printf("nop");  break;;
-      case 0x01: printf("LD BC, n16"); ld_BC_n(cpu); printf("%x",cpu->reg.BC); break;
-      case 0x02: printf("LD [BC], A"); break;
-      case 0x03: printf("INC BC"); break;
-      case 0x04: printf("INC B"); break;
-      case 0x05: printf("DEC B"); break;
-      case 0x06: printf("LD B, n8"); break;
-      case 0x07: printf("RLCA"); break;
-      case 0x08: printf("LD [a16], SP"); break;
-      case 0x09: printf("ADD HL BC"); break;
-      case 0x0A: printf("LD A [BC]"); break;
-      case 0x0B: printf("DEC BC"); break;
-      case 0x0C: printf("INC C"); break;
-      case 0x0D: printf("DEC C"); break;
-      case 0x0E: printf("LD, C, n8"); break;
-      case 0x0F: printf("RRCA"); break;
-      
-      default:
-         printf("undefined func: %02X",opcode);
-         break;
-      }
-      printf("\n");
-
-}
-
-
 //0x00
-void nop(){
+void nop(cpu_t *cpu){
    printf("nop\n");
 }
 
 //0x10
-void stop(){
+void stop(cpu_t *cpu){
    printf("no stop i guess\n");
 } 
 
 //0x20 todo
-void jr_NZ_e(){
+void jr_NZ_e(cpu_t *cpu){
    //idk;
 }
 
@@ -738,7 +691,7 @@ void ld_atHL_L(cpu_t *cpu){
 
 //0x76 todo
 void HALT(cpu_t *cpu){
-   printf("idk todo");
+   printf("idk todo HALT");
 }
 
 //0x77
@@ -1280,5 +1233,224 @@ instruction_t instructions[256] = {
    {"INC A", inc_A, 4},
    {"DEC A", dec_A, 4},
    {"LD A, n8", ld_A_n, 8},
-   {"CCF",ccf,4}
+   {"CCF", ccf, 4},
+   {"LD B, B", ld_B_B, 4},
+   {"LD B, C", ld_B_C, 4},
+   {"LD B, D", ld_B_D, 4},
+   {"LD B, E", ld_B_E, 4},
+   {"LD B, H", ld_B_H, 4},
+   {"LD B, L", ld_B_L, 4},
+   {"LD B, [hl]", ld_B_atHL, 8},
+   {"LD B, A", ld_B_A, 4},
+   {"LD C, B", ld_C_B, 4},
+   {"LD C, C", ld_C_C, 4},
+   {"LD C, D", ld_C_D, 4},
+   {"LD C, E", ld_C_E, 4},
+   {"LD C, H", ld_C_H, 4},
+   {"LD C, L", ld_C_L, 4},
+   {"LD C, [hl]", ld_C_atHL, 8},
+   {"LD C, A", ld_C_A, 4},
+   {"LD D, B", ld_D_B, 4},
+   {"LD D, C", ld_D_C, 4},
+   {"LD D, D", ld_D_D, 4},
+   {"LD D, E", ld_D_E, 4},
+   {"LD D, H", ld_D_H, 4},
+   {"LD D, L", ld_D_L, 4},
+   {"LD D, [hl]", ld_D_atHL, 8},
+   {"LD D, A", ld_D_A, 4},
+   {"LD E, B", ld_E_B, 4},
+   {"LD E, C", ld_E_C, 4},
+   {"LD E, D", ld_E_D, 4},
+   {"LD E, E", ld_E_E, 4},
+   {"LD E, H", ld_E_H, 4},
+   {"LD E, L", ld_E_L, 4},
+   {"LD E, [hl]", ld_E_atHL, 8},
+   {"LD E, A", ld_E_A, 4},
+   {"LD H, B", ld_H_B, 4},
+   {"LD H, C", ld_H_C, 4},
+   {"LD H, D", ld_H_D, 4},
+   {"LD H, E", ld_H_E, 4},
+   {"LD H, H", ld_H_H, 4},
+   {"LD H, L", ld_H_L, 4},
+   {"LD H, [hl]", ld_H_atHL, 8},
+   {"LD H, A", ld_H_A, 4},
+   {"LD L, B", ld_L_B, 4},
+   {"LD L, C", ld_L_C, 4},
+   {"LD L, D", ld_L_D, 4},
+   {"LD L, E", ld_L_E, 4},
+   {"LD L, H", ld_L_H, 4},
+   {"LD L, L", ld_L_L, 4},
+   {"LD L, [hl]", ld_L_atHL, 8},
+   {"LD L, A", ld_L_A, 4},
+   {"LD [hl], B", ld_atHL_B, 8},
+   {"LD [hl], C", ld_atHL_C, 8},
+   {"LD [hl], D", ld_atHL_D, 8},
+   {"LD [hl], E", ld_atHL_E, 8},
+   {"LD [hl], H", ld_atHL_H, 8},
+   {"LD [hl], L", ld_atHL_L, 8},
+   {"HALT", HALT, 8},
+   {"LD [hl], A", ld_atHL_A, 8},
+   {"LD A, B", ld_A_B, 4},
+   {"LD A, C", ld_A_C, 4},
+   {"LD A, D", ld_A_D, 4},
+   {"LD A, E", ld_A_E, 4},
+   {"LD A, H", ld_A_H, 4},
+   {"LD A, L", ld_A_L, 4},
+   {"LD A, [hl]", ld_A_atHL, 8},
+   {"LD A, A", ld_A_A, 4},
+   {"ADD A, B", add_A_B, 4},
+   {"ADD A, C", add_A_C, 4},
+   {"ADD A, D", add_A_D, 4},
+   {"ADD A, E", add_A_E, 4},
+   {"ADD A, H", add_A_H, 4},
+   {"ADD A, L", add_A_L, 4},
+   {"ADD A, [hl]", add_A_atHL, 8},
+   {"ADD A, A", add_A_A, 4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
+   {"unknown",nop,4},
 };
+
+cpu_t init_cpu(uint8_t rom[]){
+   cpu_t *cpu = malloc(sizeof(cpu_t));
+   cpu->reg.A = 0x01;
+   cpu->reg.F = 0x00;
+   setFlag(cpu, Z_FLAG);
+   cpu->reg.B = 0x00;
+   cpu->reg.C = 0x13;
+   cpu->reg.D = 0x00;
+   cpu->reg.E = 0xD8;
+   cpu->reg.H = 0x01;
+   cpu->reg.L = 0x4D;
+   cpu->reg.PC = 0x0100; 
+   cpu->reg.SP = 0xFFFE;
+   loadRomToBank(cpu, rom);
+   while (1)
+   {
+      uint8_t opcode = readMemory8(cpu);
+      readOpcode(cpu, opcode);
+   }
+}
+
+void readOpcode(cpu_t* cpu, uint8_t opcode){
+   printf("%x\t",opcode);
+   instructions[opcode].function(cpu);
+   printf("\n");
+}
